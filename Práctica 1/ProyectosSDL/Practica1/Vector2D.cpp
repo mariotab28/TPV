@@ -32,6 +32,13 @@ Vector2D Vector2D::operator+(const Vector2D& v) const {
 	return r;
 }
 
+Vector2D Vector2D::operator-(const Vector2D& v) const {
+	Vector2D r;
+	r.x = this->x - v.x;
+	r.y = this->y - v.y;
+	return r;
+}
+
 Vector2D Vector2D::operator*(double d) const {
 	Vector2D r;
 	r.x = x * d;

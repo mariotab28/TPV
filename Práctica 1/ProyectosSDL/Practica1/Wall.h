@@ -21,5 +21,7 @@ public:
 	~Wall() {}
 
 	//Métodos
-	void render() const; //render
+	void render(); //render
+	bool collides(const SDL_Rect& ballRect);
+	SDL_Rect getRect();
 };

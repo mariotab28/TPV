@@ -24,4 +24,10 @@ public:
 
 	//Métodos
 	void render() const; //render
+	double getX();	//Devuelve la componente X de la posición
+	double getY();	//Devuelve la componente Y de la posición
+	uint getW();	//Devuelve el ancho
+	uint getH();	//Devuelve el alto
+	uint getRow();	//Devuelve la fila
+	uint getCol();	//Devuelve la columna
 };

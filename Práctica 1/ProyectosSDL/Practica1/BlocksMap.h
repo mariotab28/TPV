@@ -10,7 +10,7 @@ const string MAP_PATH = "..\\maps\\";
 
 class BlocksMap {
 private:
-
+	Vector2D pos = Vector2D(0, 0);
 	uint rows, cols;
 	Block*** cells = nullptr; //se crea internamente con el método load()
 	string filename;
@@ -24,8 +24,8 @@ private:
 public:
 	//Constructora
 	BlocksMap() {}
-	BlocksMap( string filename, uint mapW, uint mapH, Texture* t) :
-		 filename(filename), mapW(mapW), mapH(mapH), texture(t) {
+	BlocksMap(double x, double y, string filename, uint mapW, uint mapH, Texture* t) :
+		pos(Vector2D(x,y)), filename(filename), mapW(mapW), mapH(mapH), texture(t) {
 		load(filename);
 	}
 
@@ -36,6 +36,7 @@ public:
 	void render() const; //render
 	void load(const string& filename); //cargarse de fichero
 	int getNumBlocks();
-	Block* getBlock(uint r, uint c);
-	//Vector2D colVector();
+	Block* blockAt(const Vector2D& p);
+	Block* collides(const SDL_Rect& ballRect, const Vector2D& ballVel, Vector2D& collVector);
+	void ballHitsBlock(Block* block);
 };

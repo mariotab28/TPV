@@ -22,8 +22,7 @@ struct TextureAttributes {
 
 const uint WIN_WIDTH = 800;
 const uint WIN_HEIGHT = 600;
-const uint FRAME_RATE = 60;
-const uint TIME_PER_FRAME = 100;
+const uint FRAME_RATE = 20;
 //Walls
 const int WALL_OFFSET = 5;
 const uint WALL_WIDTH = 16 + WALL_OFFSET;
@@ -45,12 +44,12 @@ const uint PADDLE_WIDTH = 100;
 const uint PADDLE_HEIGHT = 20;
 const double PADDLE_X_INI = WIN_WIDTH / 2 - PADDLE_WIDTH / 2;
 const double PADDLE_Y_INI = WIN_HEIGHT - PADDLE_HEIGHT - 50;
-const double PADDLE_SPEED = 15;
+const double PADDLE_SPEED = 10;
 //Ball
 const uint BALL_RADIUS = 15;
 const double BALL_X_INI = WIN_WIDTH / 2 - BALL_RADIUS / 2;
 const double BALL_Y_INI = WIN_HEIGHT - BALL_RADIUS - 100;
-const double BALL_SPEED = 10;
+const double BALL_SPEED = 4;
 
 class Game {
 private:
@@ -59,9 +58,9 @@ private:
 		
 	//Punteros a los objetos
 	Wall* topWall = nullptr;
-	Wall* sideWall1 = nullptr;
-	Wall* sideWall2 = nullptr;
-	BlocksMap* blockMap = nullptr;
+	Wall* leftSideWall = nullptr;
+	Wall* rightSideWall = nullptr;
+	BlocksMap* map = nullptr;
 	Paddle* paddle = nullptr;
 	Ball* ball = nullptr;
 
@@ -81,5 +80,5 @@ public:
 	void render() const;
 	void handleEvents();
 	void update();
-	//void collides();
+	bool collides(const SDL_Rect& rect, const Vector2D& vel, Vector2D& collVector);
 };

@@ -9,7 +9,15 @@ using namespace std;
 
 int main(int argc, char* argv[]) {
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
-	Game* game = new Game();
-	game->run();
+	try
+	{
+		Game* game = new Game();
+		game->run();
+	}
+	catch (string ex)
+	{
+		cout << ex;
+		system("pause");
+	}
 	return 0;
 }

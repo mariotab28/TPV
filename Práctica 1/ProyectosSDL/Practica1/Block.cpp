@@ -12,3 +12,27 @@ void Block::render() const {
 	uint col = color % texture->getNumCols();
 	texture->renderFrame(destRect, row, col);
 }
+
+double Block::getX() {
+	return pos.getX();
+}
+
+double Block::getY() {
+	return pos.getY();
+}
+
+uint Block::getW() {
+	return w;
+}
+
+uint Block::getH() {
+	return h;
+}
+
+uint Block::getRow() {	//Devuelve la fila
+	return row;
+}
+
+uint Block::getCol() {	//Devuelve la columna
+	return col;
+}
