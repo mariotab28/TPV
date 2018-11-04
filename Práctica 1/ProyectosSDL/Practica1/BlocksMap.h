@@ -19,7 +19,7 @@ private:
 	//dim. blocks
 	uint cellW; uint cellH;
 	Texture* texture; //textura con los bloques
-	uint numBlocks;
+	uint numBlocks = 0;
 
 public:
 	//Constructora

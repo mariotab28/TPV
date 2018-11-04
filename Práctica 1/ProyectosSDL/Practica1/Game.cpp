@@ -22,6 +22,22 @@ Game::Game() {
 
 
 	// We finally create the game objects
+	createObjects();
+}
+
+//Destructora de Game
+Game::~Game() {
+	destroyObjects();
+
+	for (uint i = 0; i < NUM_TEXTURES; i++) delete textures[i];
+
+	SDL_DestroyRenderer(renderer);
+	SDL_DestroyWindow(window);
+	SDL_Quit();
+}
+
+//Crea los objetos del juego
+void Game::createObjects() {
 	topWall = new Wall(-WALL_OFFSET, 0, WIN_WIDTH + WALL_OFFSET * 2, WALL_WIDTH, textures[TopText]);
 	leftSideWall = new Wall(0, 0, WALL_WIDTH, WIN_HEIGHT, textures[SideText]);
 	rightSideWall = new Wall(WIN_WIDTH - WALL_WIDTH, 0, WALL_WIDTH, WIN_HEIGHT, textures[SideText]);
@@ -30,12 +46,16 @@ Game::Game() {
 	ball = new Ball(BALL_X_INI, BALL_Y_INI, BALL_RADIUS, BALL_RADIUS, textures[BallText], this);
 }
 
-//Destructora de Game
-Game::~Game() {
-	for (uint i = 0; i < NUM_TEXTURES; i++) delete textures[i];
-	SDL_DestroyRenderer(renderer);
-	SDL_DestroyWindow(window);
-	SDL_Quit();
+
+//Destruye los objetos en orden inverso a su creación
+void Game::destroyObjects() {
+	delete ball;
+	delete paddle;
+	//map->~BlocksMap();
+	delete map;
+	delete rightSideWall;
+	delete leftSideWall;
+	delete topWall;
 }
 
 //Función principal
@@ -51,7 +71,6 @@ void Game::run() {
 		}
 
 		render();
-		
 	}
 }
 
@@ -59,6 +78,10 @@ void Game::run() {
 void Game::update() {
 	paddle->update();
 	ball->update();
+
+	//Comprueba si el jugador ha ganado
+	if (win)
+		std::cout << "¡YOU WON!";
 }
 
 
@@ -77,10 +100,9 @@ void Game::render() const {
 
 void Game::handleEvents() {
 	SDL_Event event;
-
+	
 	while (SDL_PollEvent(&event) && !exit) {
 		if (event.type == SDL_QUIT) exit = true;
-
 		paddle->handleEvents(event);
 	}
 }
@@ -124,4 +146,10 @@ bool Game::collides(const SDL_Rect& rect, const Vector2D& vel, Vector2D &collVec
 
 		return false;
 	}
+}
+
+
+void Game::restart() {
+	destroyObjects();
+	createObjects();
 }

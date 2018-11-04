@@ -1,5 +1,6 @@
 #include "BlocksMap.h"
 #include <fstream>
+#include <algorithm>
 
 BlocksMap::~BlocksMap() {
 	if (cells != nullptr) {
@@ -48,9 +49,10 @@ void BlocksMap::load(const string& filename) {
 
 			if (color == 0) //celda vacía
 				cells[r][c] = nullptr;
-			else
+			else {
 				cells[r][c] = new Block((double)cellW * c + pos.getX(), (double)cellH * r + pos.getY(), cellW, cellH, r, c, color - 1, texture);
-			numBlocks++;
+				numBlocks++;
+			}
 		}
 	}
 }
@@ -132,13 +134,14 @@ Block* BlocksMap::collides(const SDL_Rect& ballRect, const Vector2D& ballVel, Ve
 Block* BlocksMap::blockAt(const Vector2D& p) {
 	Block* block = nullptr;
 
-	if (p.getY() <= pos.getY() + cellH * rows) { //Comprueba que la pelota está dentro del espacio del mapa
+	if (p.getY() <= pos.getY() + mapH && p.getY() >= pos.getY()) { //Comprueba que la pelota está dentro del espacio del mapa
 		//Encuentra la columna y la fila del bloque
 		uint row = p.getY() / cellH - 2;
-		uint col = p.getX() / cellW - 1;
+		uint col = p.getX() / cellW;// -1;
 
-		if(row < rows)
-			block = cells[row][col];
+		if (col >= cols)
+			std::cout << "ups";
+		block = cells[std::min(row, rows - 1)][std::min(col,cols - 1)];
 	}
 	return block;
 }
@@ -153,4 +156,5 @@ Block* BlocksMap::blockAt(const Vector2D& p) {
 //Recibe el bloque con el que ha colisionado la pelota y lo destruye en el mapa
 void BlocksMap::ballHitsBlock(Block* block) {
 	cells[block->getRow()][block->getCol()] = nullptr;
+	numBlocks--;
 }

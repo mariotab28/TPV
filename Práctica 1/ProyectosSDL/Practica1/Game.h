@@ -49,7 +49,7 @@ const double PADDLE_SPEED = 10;
 const uint BALL_RADIUS = 15;
 const double BALL_X_INI = WIN_WIDTH / 2 - BALL_RADIUS / 2;
 const double BALL_Y_INI = WIN_HEIGHT - BALL_RADIUS - 100;
-const double BALL_SPEED = 4;
+const double BALL_SPEED = 8;
 
 class Game {
 private:
@@ -76,9 +76,12 @@ private:
 public:
 	Game();
 	~Game();
+	void createObjects();
+	void destroyObjects();
 	void run();
 	void render() const;
 	void handleEvents();
 	void update();
 	bool collides(const SDL_Rect& rect, const Vector2D& vel, Vector2D& collVector);
+	void restart();
 };

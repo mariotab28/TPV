@@ -33,5 +33,8 @@ void Ball::update() {
 
 	if (game->collides(ballRect, velocity, collVector))
 		velocity = velocity - collVector * ((velocity * 2) * collVector);
+
+	if (pos.getY() >= WIN_HEIGHT)
+		game->restart();
 }
 
