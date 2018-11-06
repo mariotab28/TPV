@@ -36,8 +36,10 @@ const TextureAttributes TEXTURE_ATRIBS[NUM_TEXTURES] = {
 	{"topside.png", 1, 1},
 };
 //BlocksMap
+const uint MAP_X = WALL_WIDTH + WALL_OFFSET;
+const uint MAP_Y = WALL_WIDTH + WALL_OFFSET;
 const uint MAP_WIDTH = WIN_WIDTH - 2 * WALL_WIDTH - WALL_OFFSET - 3;
-const uint MAP_HEIGHT = WIN_HEIGHT/3; 
+const uint MAP_HEIGHT = WIN_HEIGHT / 2;//3; 
 const string MAP_FILENAME = "level01.ark";
 //Paddle
 const uint PADDLE_WIDTH = 100;
@@ -49,7 +51,7 @@ const double PADDLE_SPEED = 10;
 const uint BALL_RADIUS = 15;
 const double BALL_X_INI = WIN_WIDTH / 2 - BALL_RADIUS / 2;
 const double BALL_Y_INI = WIN_HEIGHT - BALL_RADIUS - 100;
-const double BALL_SPEED = 8;
+const double BALL_SPEED = 3;
 
 class Game {
 private:

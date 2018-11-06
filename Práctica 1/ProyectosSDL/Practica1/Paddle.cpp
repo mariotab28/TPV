@@ -59,5 +59,32 @@ void Paddle::handleEvents(SDL_Event& event) {
 
 bool Paddle::collides(SDL_Rect ballRect, const Vector2D& ballVel, Vector2D& collVector) {
 	SDL_Rect paddleRect = getRect();
-	return SDL_HasIntersection(&ballRect, &paddleRect);
+	SDL_Rect interRect;
+
+	if (SDL_IntersectRect(&ballRect, &paddleRect, &interRect)) {
+		//if (ballRect.y < paddleRect.y)
+		Vector2D collVectorLeft = { -PERTURBATION, -PERTURBATION };
+		Vector2D collVectorCenter = { 0, -1 };
+		Vector2D collVectorRight = { PERTURBATION, -PERTURBATION };
+
+		if (ballRect.y > paddleRect.y) {
+			if (ballRect.x < paddleRect.x)
+				collVector = { -1, 0 };
+			else
+				collVector = { 1, 0 };
+		}
+		else if (ballRect.x <= paddleRect.x + paddleRect.w / 3)	//Tercio izquierdo
+			collVector = collVectorLeft;
+		else if (ballRect.x > paddleRect.x + paddleRect.w / 3 && ballRect.x < paddleRect.x + paddleRect.w - paddleRect.w / 3) //centro
+			collVector = { 0, -1 };
+		else if(ballRect.x >= paddleRect.x + paddleRect.w - paddleRect.w / 3) //Tercio derecho
+			collVector = collVectorRight;
+
+		return true;
+	}
+	else
+		return false;
+	
+	
+	//return SDL_HasIntersection(&ballRect, &paddleRect);
 }

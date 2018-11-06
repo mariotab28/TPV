@@ -9,6 +9,8 @@ enum Movement {
 	MovingLeft, MovingRight
 };
 
+const double PERTURBATION = sqrt(2) / 2; //Constante de perturbación del vector de colisión de la pelota
+
 class Paddle {
 private:
 	Vector2D pos = Vector2D(0, 0);

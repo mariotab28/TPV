@@ -41,7 +41,7 @@ void Game::createObjects() {
 	topWall = new Wall(-WALL_OFFSET, 0, WIN_WIDTH + WALL_OFFSET * 2, WALL_WIDTH, textures[TopText]);
 	leftSideWall = new Wall(0, 0, WALL_WIDTH, WIN_HEIGHT, textures[SideText]);
 	rightSideWall = new Wall(WIN_WIDTH - WALL_WIDTH, 0, WALL_WIDTH, WIN_HEIGHT, textures[SideText]);
-	map = new BlocksMap(WALL_WIDTH + WALL_OFFSET, WALL_WIDTH + WALL_OFFSET, MAP_FILENAME, MAP_WIDTH, MAP_HEIGHT, textures[BrickText]);
+	map = new BlocksMap(MAP_X, MAP_Y, MAP_FILENAME, MAP_WIDTH, MAP_HEIGHT, textures[BrickText]);
 	paddle = new Paddle(PADDLE_X_INI, PADDLE_Y_INI, PADDLE_WIDTH, PADDLE_HEIGHT, textures[PaddleText]);
 	ball = new Ball(BALL_X_INI, BALL_Y_INI, BALL_RADIUS, BALL_RADIUS, textures[BallText], this);
 }
@@ -51,7 +51,6 @@ void Game::createObjects() {
 void Game::destroyObjects() {
 	delete ball;
 	delete paddle;
-	//map->~BlocksMap();
 	delete map;
 	delete rightSideWall;
 	delete leftSideWall;
@@ -111,18 +110,42 @@ void Game::handleEvents() {
 bool Game::collides(const SDL_Rect& rect, const Vector2D& vel, Vector2D &collVector) {
 	if (ball != nullptr) { //Si la bola está en el mapa (TEMPORAL)
 
-		//colisión con BLOQUE
-		Block* block = map->collides(rect, vel, collVector);
-		if (block != nullptr) {
-			map->ballHitsBlock(block);
-			if (map->getNumBlocks() == 0)
-				win = true;
+		bool col = false;
 
-			return true;
+		//colisión con BLOQUE
+		if (rect.y <= MAP_Y + MAP_HEIGHT && rect.y >= MAP_Y) { //Comprueba que la pelota está dentro del espacio del mapa de bloques
+			Block* block = map->collides(rect, vel, collVector);
+			if (block != nullptr) {
+				map->ballHitsBlock(block);
+				if (map->getNumBlocks() == 0)
+					win = true;
+
+				col = true;
+				//return true;
+			}
 		}
 
 		//colisión con MUROS
-		if (topWall->collides(rect)) //TOP WALL
+		if (rect.y <= WALL_WIDTH) //TOP WALL
+		{
+			collVector = { 0,1 };
+			col = true;
+			//return true;
+		}
+		else if (rect.x <= WALL_WIDTH) //LEFT WALL
+		{
+			collVector = { 1,0 };
+			col = true;
+			//return true;
+		}
+		else if (rect.x + rect.w >= WIN_WIDTH - WALL_WIDTH) //RIGHT WALL
+		{
+			collVector = { -1,0 };
+			col = true;
+			//return true;
+		}
+		
+		/*if (topWall->collides(rect)) //TOP WALL
 		{
 			collVector = { 0,1 };
 			return true;
@@ -136,15 +159,18 @@ bool Game::collides(const SDL_Rect& rect, const Vector2D& vel, Vector2D &collVec
 		{
 			collVector = { -1,0 };
 			return true;
-		}
+		}*/
 
 		//colisión con PADDLE
-		if (paddle->collides(rect, vel, collVector)) {
-			collVector = { 0,-1 };
-			return true;
+		if (rect.y + rect.h >= PADDLE_Y_INI - rect.h) {
+			if (paddle->collides(rect, vel, collVector)) {
+				//collVector = { 0,-1 };
+				col = true;
+				//return true;
+			}
 		}
 
-		return false;
+		return col;
 	}
 }
 

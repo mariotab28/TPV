@@ -85,7 +85,8 @@ Block* BlocksMap::collides(const SDL_Rect& ballRect, const Vector2D& ballVel, Ve
 		else if ((b = blockAt(p1))) {
 			collVector = { 0,1 };
 		}
-		else if ((b = blockAt(p2))) collVector = { 1,0 };
+		else if ((b = blockAt(p2))) 
+			collVector = { 1,0 };
 	}
 	else if (ballVel.getX() >= 0 && ballVel.getY() < 0) {
 		if ((b = blockAt(p1))) {
@@ -97,7 +98,8 @@ Block* BlocksMap::collides(const SDL_Rect& ballRect, const Vector2D& ballVel, Ve
 		else if ((b = blockAt(p0))) {
 			collVector = { 0,1 };
 		}
-		else if ((b = blockAt(p3))) collVector = { -1,0 };
+		else if ((b = blockAt(p3))) 
+			collVector = { -1,0 };
 	}
 	else if (ballVel.getX() > 0 && ballVel.getY() > 0) {
 		if ((b = blockAt(p3))) {
@@ -109,7 +111,8 @@ Block* BlocksMap::collides(const SDL_Rect& ballRect, const Vector2D& ballVel, Ve
 		else if ((b = blockAt(p2))) {
 			collVector = { 0,-1 };
 		}
-		else if ((b = blockAt(p1))) collVector = { -1,0 };
+		else if ((b = blockAt(p1))) 
+			collVector = { -1,0 };
 	}
 	else if (ballVel.getX() < 0 && ballVel.getY() > 0) {
 		if ((b = blockAt(p2))) {
@@ -121,7 +124,8 @@ Block* BlocksMap::collides(const SDL_Rect& ballRect, const Vector2D& ballVel, Ve
 		else if ((b = blockAt(p3))) {
 			collVector = { 0,-1 };
 		}
-		else if ((b = blockAt(p0))) collVector = { 1,0 };
+		else if ((b = blockAt(p0))) 
+			collVector = { 1,0 };
 	}
 	return b;
 }
@@ -134,15 +138,39 @@ Block* BlocksMap::collides(const SDL_Rect& ballRect, const Vector2D& ballVel, Ve
 Block* BlocksMap::blockAt(const Vector2D& p) {
 	Block* block = nullptr;
 
-	if (p.getY() <= pos.getY() + mapH && p.getY() >= pos.getY()) { //Comprueba que la pelota está dentro del espacio del mapa
-		//Encuentra la columna y la fila del bloque
-		uint row = p.getY() / cellH - 2;
-		uint col = p.getX() / cellW;// -1;
+	bool found = false;
+	int i = 0, j = 0;
+	
+	while (i < rows && !found) {
+		j = 0;
 
-		if (col >= cols)
-			std::cout << "ups";
-		block = cells[std::min(row, rows - 1)][std::min(col,cols - 1)];
+		while (j < cols && !found)
+		{
+			if (cells[i][j] != nullptr && 
+				cells[i][j]->getX() + cells[i][j]->getW() > p.getX() && cells[i][j]->getX() < p.getX() &&
+				cells[i][j]->getY() + cells[i][j]->getH() > p.getY() && cells[i][j]->getY() < p.getY()) {
+				block = cells[i][j];
+				found = true;
+			}
+
+			j++;
+		}
+		
+		i++;
 	}
+
+
+
+
+
+	//Encuentra la columna y la fila del bloque
+	/*uint row = p.getY() / cellH - 1;
+	uint col = p.getX() / cellW;// -1;
+
+		
+	block = cells[std::min(row, rows)][std::min(col, cols)];*/ //std::min evita situaciones en las que un punto del ballRect se sale del mapa de bloques
+	
+
 	return block;
 }
 
