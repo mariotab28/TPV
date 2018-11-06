@@ -7,7 +7,7 @@ typedef unsigned int uint;
 
 class Block {
 private:
-	Vector2D pos = Vector2D(0, 0); //Vector de posición x,y
+	Vector2D pos = Vector2D(0, 0); //Vector de posición x,y (esq. superior izq.)
 	uint w = 0; uint h = 0;	//ancho y alto
 	uint color = 0; //frame de la textura (int) 0-5
 	uint row = 0; uint col = 0; //fila y columna en BlocksMap

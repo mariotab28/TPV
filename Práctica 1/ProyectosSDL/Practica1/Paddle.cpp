@@ -67,6 +67,9 @@ bool Paddle::collides(SDL_Rect ballRect, const Vector2D& ballVel, Vector2D& coll
 		Vector2D collVectorCenter = { 0, -1 };
 		Vector2D collVectorRight = { PERTURBATION, -PERTURBATION };
 
+		Vector2D ballDir = ballVel;
+		ballDir.normalize(); //Vector de dirección de la pelota
+
 		if (ballRect.y > paddleRect.y) {
 			if (ballRect.x < paddleRect.x)
 				collVector = { -1, 0 };
@@ -74,17 +77,25 @@ bool Paddle::collides(SDL_Rect ballRect, const Vector2D& ballVel, Vector2D& coll
 				collVector = { 1, 0 };
 		}
 		else if (ballRect.x <= paddleRect.x + paddleRect.w / 3)	//Tercio izquierdo
-			collVector = collVectorLeft;
+		{
+			if (ballDir.getX() >= 0)
+				collVector = collVectorLeft;
+			else
+				collVector = { 0, -1 };
+		}
 		else if (ballRect.x > paddleRect.x + paddleRect.w / 3 && ballRect.x < paddleRect.x + paddleRect.w - paddleRect.w / 3) //centro
-			collVector = { 0, -1 };
-		else if(ballRect.x >= paddleRect.x + paddleRect.w - paddleRect.w / 3) //Tercio derecho
-			collVector = collVectorRight;
+			collVector = collVectorCenter;
+		else if (ballRect.x >= paddleRect.x + paddleRect.w - paddleRect.w / 3) //Tercio derecho
+		{
+			if(ballDir.getX() <= 0)
+				collVector = collVectorRight;
+			else
+				collVector = {0, - 1};
+		}
 
 		return true;
 	}
 	else
 		return false;
 	
-	
-	//return SDL_HasIntersection(&ballRect, &paddleRect);
 }

@@ -13,8 +13,8 @@ Game::Game() {
 		WIN_WIDTH, WIN_HEIGHT, SDL_WINDOW_SHOWN);
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 	if (window == nullptr || renderer == nullptr) throw "Error loading the SDL window or renderer";
-	// We now create the textures
 
+	// We now create the textures
 	for (uint i = 0; i < NUM_TEXTURES; i++)
 	{
 		textures[i] = new Texture(renderer, TEXTURE_ATRIBS[i].filename, TEXTURE_ATRIBS[i].rows, TEXTURE_ATRIBS[i].cols);

@@ -40,6 +40,7 @@ void BlocksMap::load(const string& filename) {
 
 	cells = new Block**[rows];
 	uint color;
+
 	for (int r = 0; r < rows; r++)
 	{
 		cells[r] = new Block*[cols];
@@ -60,10 +61,6 @@ void BlocksMap::load(const string& filename) {
 int BlocksMap::getNumBlocks() {
 	return numBlocks;
 }
-
-/*Block* BlocksMap::getBlock(uint r, uint c) {
-	return cells[r][c];
-}*/
 
 /* Dados el rectángulo y vector de dirección de la pelota, devuelve un puntero al
    bloque con el que ésta colisiona (nullptr si no colisiona con nadie) y el
@@ -159,26 +156,9 @@ Block* BlocksMap::blockAt(const Vector2D& p) {
 		i++;
 	}
 
-
-
-
-
-	//Encuentra la columna y la fila del bloque
-	/*uint row = p.getY() / cellH - 1;
-	uint col = p.getX() / cellW;// -1;
-
-		
-	block = cells[std::min(row, rows)][std::min(col, cols)];*/ //std::min evita situaciones en las que un punto del ballRect se sale del mapa de bloques
-	
-
 	return block;
 }
 
-
-/*
-	bX = p.x - (p.x % (c*cellW));
-	c = bX / cellW;
-*/
 
 
 //Recibe el bloque con el que ha colisionado la pelota y lo destruye en el mapa
